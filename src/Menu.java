@@ -1,4 +1,7 @@
-
+/**
+ *
+ * @author bcelikar
+ */
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.event.*;
@@ -6,27 +9,30 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-/**
- *
- * @author bcelikar
- */
 public class Menu extends JFrame {
 
     public Menu() {
         initComponents();
         restrictToNumericInput(idTextField);
         restrictToNumericInput(pinTextField);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
+        
+        // Attach a key listener for the enter button
+        pinTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    loginButton.doClick(); // Trigger the OK button's action event
+                }
+            }
+        });
 
-        // Attach an action listener to the submit button
+        // Attach an action listener to the log in button
         loginButton.addActionListener((ActionEvent e) -> {
             String id = idTextField.getText();
             String pin = new String(pinTextField.getPassword());
-            
+
             // Perform your desired action with the ID and PIN values here
             // For example, you can store them in a file
             String filename = "account_data.txt";
@@ -39,6 +45,11 @@ public class Menu extends JFrame {
                 new Window(filename, id);
                 dispose();
             }
+        });
+        // Attach an action listener to the create account button
+        signUpButton.addActionListener((ActionEvent e) -> {
+            new CreateAccountWindow();
+            dispose();
         });
     }
 
@@ -108,7 +119,8 @@ public class Menu extends JFrame {
         jPanel5 = new javax.swing.JPanel();
         loginButton = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
-        createAccountButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        signUpButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -233,28 +245,35 @@ public class Menu extends JFrame {
         jPanel8.setBackground(new java.awt.Color(255, 239, 127));
         jPanel8.setPreferredSize(new java.awt.Dimension(250, 120));
 
-        createAccountButton.setBackground(new java.awt.Color(255, 239, 127));
-        createAccountButton.setFont(new java.awt.Font("Verdana", 0, 9)); // NOI18N
-        createAccountButton.setText("Don't have an account yet? Sign up.");
-        createAccountButton.setActionCommand("Don't have an account yet? Sign up.");
-        createAccountButton.setBorderPainted(false);
-        createAccountButton.setFocusPainted(false);
-        createAccountButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel6.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Don't have an account?");
+
+        signUpButton.setBackground(new java.awt.Color(255, 239, 127));
+        signUpButton.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        signUpButton.setForeground(new java.awt.Color(0, 153, 255));
+        signUpButton.setText("Sign up.");
+        signUpButton.setBorder(null);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(createAccountButton, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(signUpButton)
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(createAccountButton)
-                .addGap(0, 103, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(signUpButton))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel8);
@@ -293,12 +312,12 @@ public class Menu extends JFrame {
     }//GEN-LAST:event_loginButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton createAccountButton;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -310,6 +329,6 @@ public class Menu extends JFrame {
     private javax.swing.JButton listMembersButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField pinTextField;
+    private javax.swing.JButton signUpButton;
     // End of variables declaration//GEN-END:variables
 }
-

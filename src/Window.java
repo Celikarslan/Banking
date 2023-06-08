@@ -1,26 +1,113 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 /**
  *
  * @author bcelikar
  */
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.awt.event.ActionEvent;
+
 public class Window extends javax.swing.JFrame {
 
-    private final String fileName;
-    private final String ID;
+    private Account customer;
 
     /**
      * Creates new form Window
+     *
      * @param fileName
-     * @param OD
+     * @param ID
      */
-    public Window(String fileName,String ID) {
+    public Window(String fileName, String ID) {
         initComponents();
-        this.fileName = fileName;
-        this.ID = ID;
+        customer = accountCreate(ID, fileName);
+        balanceLabel.setText("Balance: $" + String.format("%.2f", customer.getBalance()));
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+
+        depositButton.addActionListener((ActionEvent e) -> {
+            Amount dialog = new Amount(this);
+            // Show the dialog and retrieve the entered amount
+            double enteredAmount = dialog.showDialog();
+            // Check if the amount was confirmed
+            if (dialog.isConfirmed()) {
+                customer.setBalance(enteredAmount);
+                updateBalance(fileName, customer.getID(), customer.getBalance());
+            }
+        });
+        withdrawButton.addActionListener((ActionEvent e) -> {
+            // Create an instance of the AmountInputDialog
+            Amount dialog = new Amount(this);
+            // Show the dialog and retrieve the entered amount
+            double enteredAmount = dialog.showDialog();
+            // Check if the amount was confirmed
+            if (dialog.isConfirmed()) {
+                if (enteredAmount <= customer.getBalance()) {
+                    customer.setBalance(-enteredAmount);
+                    updateBalance(fileName, customer.getID(), customer.getBalance());
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "Cannot withdraw more than balance");
+                }
+            }
+        });
+        simInterestButton.addActionListener((ActionEvent e) -> {
+            dispose();
+
+        });
+
+        backButton.addActionListener((ActionEvent e) -> {
+            new Menu();
+            dispose();
+        });
+    }
+
+    private void updateBalance(String filename, String id, double newBalance) {
+        balanceLabel.setText("Balance: $" + String.format("%.2f", newBalance));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            StringBuilder fileContent = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("ID: " + id + ", ")) {
+                    String[] accountInfo = line.split(", ");
+                    String balanceString = accountInfo[3].substring(9);
+                    line = line.replace(balanceString, String.format("%.2f", newBalance));
+                }
+                fileContent.append(line).append(System.lineSeparator());
+            }
+
+            // Write the updated file content back to the file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                writer.write(fileContent.toString());
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    private Account accountCreate(String id, String filename) {
+        String accountData = getAccountData(filename, id);
+        String[] accountInfo = accountData.split(", ");
+        String name = accountInfo[2].substring(6);
+        String balance = accountInfo[3].substring(9);
+        Double bal = Double.valueOf(balance);
+        Account cust = new Account(id, name);
+        cust.setBalance(bal);
+        return cust;
+    }
+
+    // Helper method to get the account data (name and balance) for the given ID
+    private static String getAccountData(String filename, String id) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("ID: " + id + ", ")) {
+                    return line;
+                }
+            }
+        } catch (IOException e) {
+        }
+        return null;
     }
 
     /**
@@ -32,57 +119,193 @@ public class Window extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        backButton = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        depositButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        withdrawButton = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        simInterestButton = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        balanceLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(800, 450));
+        setMinimumSize(new java.awt.Dimension(800, 450));
+        setPreferredSize(new java.awt.Dimension(800, 450));
+
+        jPanel1.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
+
+        jPanel3.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel3.setPreferredSize(new java.awt.Dimension(200, 115));
+
+        nameLabel.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("Name Label");
+        nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        backButton.setText("Back");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jPanel1.add(jPanel3);
+
+        jPanel4.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel4.setPreferredSize(new java.awt.Dimension(200, 60));
+
+        depositButton.setLabel("Deposit");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(depositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(depositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel4);
+
+        jPanel5.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel5.setPreferredSize(new java.awt.Dimension(200, 60));
+
+        withdrawButton.setLabel("Withdraw");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(withdrawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(withdrawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel5);
+
+        jPanel6.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel6.setPreferredSize(new java.awt.Dimension(200, 60));
+
+        simInterestButton.setText("Simulate Interest");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(simInterestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(simInterestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel6);
+
+        jPanel7.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel7.setPreferredSize(new java.awt.Dimension(200, 155));
+
+        balanceLabel.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        balanceLabel.setText("Balance: ");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel7);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
+
+        jPanel2.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel2.setPreferredSize(new java.awt.Dimension(600, 450));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 789, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 450, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Window().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
+    private javax.swing.JLabel balanceLabel;
+    private javax.swing.JButton depositButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton simInterestButton;
+    private javax.swing.JButton withdrawButton;
     // End of variables declaration//GEN-END:variables
 }
