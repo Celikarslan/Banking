@@ -24,6 +24,8 @@ public class Window extends javax.swing.JFrame {
         initComponents();
         customer = accountCreate(ID, fileName);
         balanceLabel.setText("Balance: $" + String.format("%.2f", customer.getBalance()));
+        nameLabel.setText("Welcome back " + customer.getName());
+
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
@@ -37,6 +39,7 @@ public class Window extends javax.swing.JFrame {
                 updateBalance(fileName, customer.getID(), customer.getBalance());
             }
         });
+        
         withdrawButton.addActionListener((ActionEvent e) -> {
             // Create an instance of the AmountInputDialog
             Amount dialog = new Amount(this);
@@ -53,6 +56,9 @@ public class Window extends javax.swing.JFrame {
             }
         });
         simInterestButton.addActionListener((ActionEvent e) -> {
+        // Make chart and table visible     
+        jPanel8.setVisible(true);
+        jPanel9.setVisible(true);
             dispose();
 
         });
@@ -61,6 +67,9 @@ public class Window extends javax.swing.JFrame {
             new Menu();
             dispose();
         });
+         // Hide chart and table initially
+        jPanel8.setVisible(false);
+        jPanel9.setVisible(false);
     }
 
     private void updateBalance(String filename, String id, double newBalance) {
@@ -132,20 +141,23 @@ public class Window extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         balanceLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(800, 450));
-        setMinimumSize(new java.awt.Dimension(800, 450));
-        setPreferredSize(new java.awt.Dimension(800, 450));
+        setMaximumSize(new java.awt.Dimension(1000, 450));
+        setMinimumSize(new java.awt.Dimension(1000, 450));
+        setPreferredSize(new java.awt.Dimension(1000, 450));
 
         jPanel1.setBackground(new java.awt.Color(255, 239, 127));
-        jPanel1.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
 
         jPanel3.setBackground(new java.awt.Color(255, 239, 127));
         jPanel3.setPreferredSize(new java.awt.Dimension(200, 115));
 
-        nameLabel.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        nameLabel.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("Name Label");
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -157,12 +169,12 @@ public class Window extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 87, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,17 +287,82 @@ public class Window extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 239, 160));
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 450));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 789, Short.MAX_VALUE)
+        jPanel8.setMaximumSize(new java.awt.Dimension(600, 450));
+        jPanel8.setMinimumSize(new java.awt.Dimension(600, 450));
+        jPanel8.setPreferredSize(new java.awt.Dimension(600, 450));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 450, Short.MAX_VALUE)
         );
+
+        jPanel2.add(jPanel8, java.awt.BorderLayout.WEST);
+
+        jPanel9.setMaximumSize(new java.awt.Dimension(200, 450));
+        jPanel9.setMinimumSize(new java.awt.Dimension(200, 450));
+        jPanel9.setPreferredSize(new java.awt.Dimension(200, 450));
+        jPanel9.setSize(new java.awt.Dimension(200, 450));
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(200, 450));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 450));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 450));
+        jScrollPane1.setSize(new java.awt.Dimension(200, 450));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Years", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setPreferredSize(new java.awt.Dimension(200, 450));
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1003, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel2.add(jPanel9, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -304,6 +381,10 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton simInterestButton;
     private javax.swing.JButton withdrawButton;

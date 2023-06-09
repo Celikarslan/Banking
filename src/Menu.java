@@ -27,6 +27,13 @@ public class Menu extends JFrame {
                 }
             }
         });
+        
+        // Attach an action listener to the list members button
+        listMembersButton.addActionListener((ActionEvent e) -> {
+           new BankMembers();
+           dispose();
+        });
+
 
         // Attach an action listener to the log in button
         loginButton.addActionListener((ActionEvent e) -> {
