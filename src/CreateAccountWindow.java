@@ -150,11 +150,12 @@ public class CreateAccountWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel1.setBackground(new java.awt.Color(199, 160, 65));
 
-        jPanel4.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel4.setBackground(new java.awt.Color(199, 160, 65));
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(105, 105, 105));
         jLabel2.setText("Name:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -181,9 +182,10 @@ public class CreateAccountWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel6.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel6.setBackground(new java.awt.Color(199, 160, 65));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(105, 105, 105));
         jLabel4.setText("ID:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -210,9 +212,10 @@ public class CreateAccountWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel7.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel7.setBackground(new java.awt.Color(199, 160, 65));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(105, 105, 105));
         jLabel5.setText("Pin");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -238,6 +241,7 @@ public class CreateAccountWindow extends javax.swing.JFrame {
                 .addComponent(pinTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
         );
 
+        signUpButton.setForeground(new java.awt.Color(199, 160, 65));
         signUpButton.setText("Sign Up");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -272,7 +276,7 @@ public class CreateAccountWindow extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel2.setBackground(new java.awt.Color(105, 105, 105));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 120));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/GBKsmall.png"))); // NOI18N
@@ -295,13 +299,14 @@ public class CreateAccountWindow extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel3.setBackground(new java.awt.Color(199, 160, 65));
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(105, 105, 105));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Have an account?");
 
-        backButton.setBackground(new java.awt.Color(255, 239, 160));
+        backButton.setBackground(new java.awt.Color(199, 160, 65));
         backButton.setForeground(new java.awt.Color(0, 153, 255));
         backButton.setText("Log in.");
         backButton.setBorder(null);

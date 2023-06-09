@@ -1,7 +1,14 @@
+
 /**
  *
  * @author bcelikar
  */
+import org.jfree.chart.*;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,10 +16,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
+import org.jfree.chart.axis.CategoryAxis;
 
 public class Window extends javax.swing.JFrame {
 
     private Account customer;
+    // Declare the instance variables for dataset, chart, and table model
+    DefaultCategoryDataset dataset;
+    JFreeChart chart;
+    DefaultTableModel tableModel;
 
     /**
      * Creates new form Window
@@ -39,7 +53,7 @@ public class Window extends javax.swing.JFrame {
                 updateBalance(fileName, customer.getID(), customer.getBalance());
             }
         });
-        
+
         withdrawButton.addActionListener((ActionEvent e) -> {
             // Create an instance of the AmountInputDialog
             Amount dialog = new Amount(this);
@@ -55,19 +69,86 @@ public class Window extends javax.swing.JFrame {
                 }
             }
         });
-        simInterestButton.addActionListener((ActionEvent e) -> {
-        // Make chart and table visible     
-        jPanel8.setVisible(true);
-        jPanel9.setVisible(true);
-            dispose();
-
-        });
 
         backButton.addActionListener((ActionEvent e) -> {
             new Menu();
             dispose();
         });
-         // Hide chart and table initially
+
+        simInterestButton.addActionListener((ActionEvent e) -> {
+            InterestDialog dialog = new InterestDialog(this, customer.getBalance());
+            dialog.setVisible(true);
+
+            double amount = dialog.getAmount();
+            int years = dialog.getYears();
+            double interestRate = dialog.getInterest();
+
+            // Clear the existing table model
+            tableModel = (DefaultTableModel) jTable1.getModel();
+            tableModel.setRowCount(0); // Remove all rows
+
+            // Check if chart already exists
+            if (chart != null) {
+                // Clear the existing dataset
+                dataset.clear();
+            } else {
+                // Create a new dataset for the graph
+                dataset = new DefaultCategoryDataset();
+            }
+
+            double totalAmount = amount;
+            for (int i = 0; i <= years; i++) {
+                dataset.addValue(totalAmount, "Total Amount", Integer.toString(i));
+                totalAmount += amount * interestRate;
+            }
+
+            // Check if chart already exists
+            if (chart != null) {
+                // Update the dataset in the existing chart
+                chart.getCategoryPlot().setDataset(dataset);
+
+                // Configure range axes to fit the new dataset
+                CategoryPlot plot = chart.getCategoryPlot();
+                plot.configureRangeAxes();
+            } else {
+                // Create a chart using the dataset
+                chart = ChartFactory.createLineChart(
+                        "Interest Simulation", "Year", "Total Amount",
+                        dataset, PlotOrientation.VERTICAL,
+                        true, true, false);
+
+                // Create a chart panel to display the chart
+                ChartPanel chartPanel = new ChartPanel(chart);
+
+                // Set the layout manager for jPanel8
+                jPanel8.setLayout(new BorderLayout());
+
+                // Clear jPanel8 before adding the chart panel
+                jPanel8.removeAll();
+
+                // Add the chart panel to jPanel8
+                jPanel8.add(chartPanel, BorderLayout.CENTER);
+
+                
+            }
+
+            // Create a table to display the total amount every year
+            Object[][] data = new Object[years][2];
+            totalAmount = amount;
+            for (int i = 0; i < years; i++) {
+                data[i][0] = Integer.toString(i + 1);
+                data[i][1] = totalAmount;
+                totalAmount += amount * interestRate;
+                totalAmount = Double.parseDouble(String.format("%.2f", totalAmount));
+                tableModel.addRow(new Object[]{i + 1, totalAmount});
+            }
+
+            // Make chart and table visible
+            jPanel8.setVisible(true);
+            jPanel9.setVisible(true);
+        });
+
+        // Hide chart and table initially
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
     }
@@ -151,17 +232,20 @@ public class Window extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1000, 450));
         setPreferredSize(new java.awt.Dimension(1000, 450));
 
-        jPanel1.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel1.setBackground(new java.awt.Color(105, 105, 105));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
 
-        jPanel3.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel3.setBackground(new java.awt.Color(105, 105, 105));
         jPanel3.setPreferredSize(new java.awt.Dimension(200, 115));
 
+        nameLabel.setBackground(new java.awt.Color(105, 105, 105));
         nameLabel.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        nameLabel.setForeground(new java.awt.Color(199, 160, 65));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("Name Label");
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        backButton.setForeground(new java.awt.Color(199, 160, 65));
         backButton.setText("Back");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -186,9 +270,10 @@ public class Window extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3);
 
-        jPanel4.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel4.setBackground(new java.awt.Color(105, 105, 105));
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 60));
 
+        depositButton.setForeground(new java.awt.Color(199, 160, 65));
         depositButton.setLabel("Deposit");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -210,9 +295,10 @@ public class Window extends javax.swing.JFrame {
 
         jPanel1.add(jPanel4);
 
-        jPanel5.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel5.setBackground(new java.awt.Color(105, 105, 105));
         jPanel5.setPreferredSize(new java.awt.Dimension(200, 60));
 
+        withdrawButton.setForeground(new java.awt.Color(199, 160, 65));
         withdrawButton.setLabel("Withdraw");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -234,9 +320,10 @@ public class Window extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5);
 
-        jPanel6.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel6.setBackground(new java.awt.Color(105, 105, 105));
         jPanel6.setPreferredSize(new java.awt.Dimension(200, 60));
 
+        simInterestButton.setForeground(new java.awt.Color(199, 160, 65));
         simInterestButton.setText("Simulate Interest");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -258,10 +345,11 @@ public class Window extends javax.swing.JFrame {
 
         jPanel1.add(jPanel6);
 
-        jPanel7.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel7.setBackground(new java.awt.Color(105, 105, 105));
         jPanel7.setPreferredSize(new java.awt.Dimension(200, 155));
 
         balanceLabel.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        balanceLabel.setForeground(new java.awt.Color(199, 160, 65));
         balanceLabel.setText("Balance: ");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -285,10 +373,11 @@ public class Window extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
-        jPanel2.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel2.setBackground(new java.awt.Color(199, 160, 65));
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 450));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jPanel8.setBackground(new java.awt.Color(199, 160, 65));
         jPanel8.setMaximumSize(new java.awt.Dimension(600, 450));
         jPanel8.setMinimumSize(new java.awt.Dimension(600, 450));
         jPanel8.setPreferredSize(new java.awt.Dimension(600, 450));
@@ -316,6 +405,9 @@ public class Window extends javax.swing.JFrame {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 450));
         jScrollPane1.setSize(new java.awt.Dimension(200, 450));
 
+        jTable1.setBackground(new java.awt.Color(105, 105, 105));
+        jTable1.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(199, 160, 65));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

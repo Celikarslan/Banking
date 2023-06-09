@@ -134,23 +134,24 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 600, 350));
         setMaximumSize(new java.awt.Dimension(600, 350));
-        setPreferredSize(new java.awt.Dimension(600, 350));
 
-        jPanel1.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel1.setBackground(new java.awt.Color(105, 105, 105));
         jPanel1.setPreferredSize(new java.awt.Dimension(250, 350));
 
-        jPanel3.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel3.setBackground(new java.awt.Color(105, 105, 105));
         jPanel3.setAlignmentX(0.0F);
         jPanel3.setAlignmentY(0.0F);
         jPanel3.setPreferredSize(new java.awt.Dimension(250, 100));
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(199, 160, 65));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome Back");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        listMembersButton.setBackground(new java.awt.Color(255, 239, 127));
+        listMembersButton.setBackground(new java.awt.Color(105, 105, 105));
         listMembersButton.setFont(new java.awt.Font("Verdana", 0, 9)); // NOI18N
+        listMembersButton.setForeground(new java.awt.Color(199, 160, 65));
         listMembersButton.setText("List Members");
         listMembersButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         listMembersButton.setOpaque(true);
@@ -180,20 +181,25 @@ public class Menu extends JFrame {
 
         jPanel1.add(jPanel3);
 
-        jPanel4.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel4.setBackground(new java.awt.Color(105, 105, 105));
         jPanel4.setPreferredSize(new java.awt.Dimension(250, 120));
 
-        jPanel6.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel6.setBackground(new java.awt.Color(105, 105, 105));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setBackground(new java.awt.Color(255, 234, 80));
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(199, 160, 65));
         jLabel2.setText("ID Number:");
         jPanel6.add(jLabel2, java.awt.BorderLayout.NORTH);
         jPanel6.add(idTextField, java.awt.BorderLayout.SOUTH);
 
-        jPanel7.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel7.setBackground(new java.awt.Color(105, 105, 105));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
+        jLabel3.setBackground(new java.awt.Color(105, 105, 105));
+        jLabel3.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(199, 160, 65));
         jLabel3.setText("Pin Number:");
         jPanel7.add(jLabel3, java.awt.BorderLayout.NORTH);
         jPanel7.add(pinTextField, java.awt.BorderLayout.SOUTH);
@@ -221,9 +227,10 @@ public class Menu extends JFrame {
 
         jPanel1.add(jPanel4);
 
-        jPanel5.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel5.setBackground(new java.awt.Color(105, 105, 105));
         jPanel5.setPreferredSize(new java.awt.Dimension(250, 50));
 
+        loginButton.setForeground(new java.awt.Color(199, 160, 65));
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -249,14 +256,15 @@ public class Menu extends JFrame {
 
         jPanel1.add(jPanel5);
 
-        jPanel8.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel8.setBackground(new java.awt.Color(105, 105, 105));
         jPanel8.setPreferredSize(new java.awt.Dimension(250, 120));
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(199, 160, 65));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Don't have an account?");
 
-        signUpButton.setBackground(new java.awt.Color(255, 239, 127));
+        signUpButton.setBackground(new java.awt.Color(105, 105, 105));
         signUpButton.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
         signUpButton.setForeground(new java.awt.Color(0, 153, 255));
         signUpButton.setText("Sign up.");
@@ -287,7 +295,7 @@ public class Menu extends JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
-        jPanel2.setBackground(new java.awt.Color(255, 239, 160));
+        jPanel2.setBackground(new java.awt.Color(199, 160, 65));
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 350));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/GBK.png"))); // NOI18N

@@ -4,7 +4,6 @@
  */
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -87,13 +86,13 @@ public class BankMembers extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(400, 350));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 300));
 
         jScrollPane1.setSize(new java.awt.Dimension(375, 300));
 
-        table.setBackground(new java.awt.Color(255, 239, 160));
+        table.setBackground(new java.awt.Color(199, 160, 65));
+        table.setForeground(new java.awt.Color(105, 105, 105));
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -144,15 +143,18 @@ public class BankMembers extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBackground(new java.awt.Color(255, 239, 127));
+        jPanel2.setBackground(new java.awt.Color(105, 105, 105));
+        jPanel2.setForeground(new java.awt.Color(199, 160, 65));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 50));
 
+        backButton.setForeground(new java.awt.Color(199, 160, 65));
         backButton.setText("Back");
         backButton.setMaximumSize(new java.awt.Dimension(60, 15));
         backButton.setMinimumSize(new java.awt.Dimension(60, 15));
         backButton.setPreferredSize(new java.awt.Dimension(60, 15));
         backButton.setSize(new java.awt.Dimension(60, 15));
 
+        deleteButton.setForeground(new java.awt.Color(199, 160, 65));
         deleteButton.setText("Delete");
         deleteButton.setMaximumSize(new java.awt.Dimension(60, 15));
         deleteButton.setMinimumSize(new java.awt.Dimension(60, 15));
