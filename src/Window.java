@@ -86,6 +86,8 @@ public class Window extends javax.swing.JFrame {
                 Account account = dialog.getAccount();
                 account.setBalance(enteredAmount);
                 addData(fileName, customer.getID(), accounts);
+                populateScrollPane(fileName);
+
             }
         });
 
@@ -103,6 +105,8 @@ public class Window extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Cannot withdraw more than balance");
                 }
+                populateScrollPane(fileName);
+
             }
         });
 
@@ -112,13 +116,18 @@ public class Window extends javax.swing.JFrame {
         });
 
         simInterestButton.addActionListener((ActionEvent e) -> {
-            InterestDialog dialog = new InterestDialog(this, accounts.get(0).getBalance());
+            int total = 0;
+            for (Account account : accounts) {
+                total += account.getBalance();
+            }
+            InterestDialog dialog = new InterestDialog(this, total);
             dialog.setVisible(true);
 
             if (dialog.isConfirmed()) {
                 double amount = dialog.getAmount();
                 int years = dialog.getYears();
                 double interestRate = dialog.getInterest();
+                boolean compoundInterest = dialog.getInterestType();
 
                 // Clear the existing table model
                 tableModel = (DefaultTableModel) jTable1.getModel();
@@ -129,16 +138,29 @@ public class Window extends javax.swing.JFrame {
 
                 // Calculate and simulate compound interest for the specified number of years
                 double balance = amount;
-                for (int i = 1; i <= years; i++) {
-                    balance += balance * interestRate;
-                    dataset.addValue(balance, "Balance", String.valueOf(i));
+                if (compoundInterest) {
+                    // Compound interest calculation
+                    for (int i = 1; i <= years; i++) {
+                        balance += balance * interestRate;
+                        dataset.addValue(balance, "Balance", String.valueOf(i));
 
-                    // Add a new row to the table model with the year and balance
-                    tableModel.addRow(new Object[]{i, balance});
+                        // Add a new row to the table model with the year and balance
+                        tableModel.addRow(new Object[]{i, balance});
+                    }
+                } else {
+                    // Simple interest calculation
+                    for (int i = 1; i <= years; i++) {
+                        balance += amount * interestRate;
+                        dataset.addValue(balance, "Balance", String.valueOf(i));
+
+                        // Add a new row to the table model with the year and balance
+                        tableModel.addRow(new Object[]{i, balance});
+                    }
                 }
 
                 // Create the line chart and update the chart panel
-                chart = ChartFactory.createLineChart("Compound Interest Simulation", "Year", "Balance", dataset, PlotOrientation.VERTICAL, true, true, false);
+                String chartTitle = compoundInterest ? "Compound Interest Simulation" : "Simple Interest Simulation";
+                chart = ChartFactory.createLineChart(chartTitle, "Year", "Balance", dataset, PlotOrientation.VERTICAL, true, true, false);
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 plot.getRangeAxis().setLabelFont(plot.getDomainAxis().getLabelFont());
 
@@ -148,7 +170,6 @@ public class Window extends javax.swing.JFrame {
                 jPanel8.validate();
             }
         });
-
     }
 
     private Member memberCreate(String id, String filename) {
