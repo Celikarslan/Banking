@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/bcelikar/Documents/BankingProject/src/Amount.java</file>
             <file>file:/Users/bcelikar/Documents/BankingProject/src/CreateAccountWindow.java</file>
+            <file>file:/Users/bcelikar/Documents/BankingProject/src/Amount.java</file>
+            <file>file:/Users/bcelikar/Documents/BankingProject/src/Member.java</file>
             <file>file:/Users/bcelikar/Documents/BankingProject/src/BankDriver.java</file>
             <file>file:/Users/bcelikar/Documents/BankingProject/src/BankMembers/BankMembers.java</file>
             <file>file:/Users/bcelikar/Documents/BankingProject/src/Menu.java</file>
+            <file>file:/Users/bcelikar/Documents/BankingProject/src/Account.java</file>
             <file>file:/Users/bcelikar/Documents/BankingProject/src/Window.java</file>
         </group>
     </open-files>

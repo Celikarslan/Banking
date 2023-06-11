@@ -1,15 +1,31 @@
 public class Account {
 
     private double balance;
-    private String ID;
-    private String name;
+    private String description;
+    private final int number;
+    private String type;
 
     // Constructor
 
-    public Account(String ID, String name) {
+    public Account(int number) {
+        this.number = number;
         balance = 0.00;
-        this.ID = ID;
-        this.name = name;
+        description = "";
+        type = "";
+    }
+    
+    public void setDescription(String des){
+        description = des;
+    }
+    
+    public String getDescription(){
+        return description;
+    }
+    public void setType(String accType){
+        type = accType;
+    }
+    public String getType(){
+        return type;
     }
 
     // Method to add to balance
@@ -21,10 +37,12 @@ public class Account {
     public void withdraw(double amount) {
         balance -= amount;
     }
+    public int getNumber(){
+        return number;
+    }
 
     // Getter for balance
     public double getBalance() {
-        String.format("%.2f", balance);
         return balance;
     }
 
@@ -33,13 +51,4 @@ public class Account {
         balance += amount;
     }
 
-    // Getter for ID
-    public String getID() {
-        return ID;
-    }
-
-    // Getter for Name
-    public String getName() {
-        return name;
-    }
 }

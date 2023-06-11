@@ -1,3 +1,4 @@
+
 /**
  *
  * @author bcelikar
@@ -8,9 +9,10 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BankMembers extends javax.swing.JFrame {
-    
+
     private DefaultTableModel model;
     private List<String> accountDataList;
 
@@ -25,22 +27,25 @@ public class BankMembers extends javax.swing.JFrame {
         // Populate the table model with data from the file
         String filename = "account_data.txt";
         accountDataList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] accountInfo = line.split(", ");
-                String id = accountInfo[0].substring(4);
-                String name = accountInfo[2].substring(6);
-                String balance = accountInfo[3].substring(9);
-                model.addRow(new Object[]{id, name, balance});
-                accountDataList.add(line);
+        try (Scanner scanner = new Scanner(new File(filename))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine(); // Read the line with "ID: ..."
+                if (line.startsWith("ID:")) {
+                    String id = line.split(": ")[1];
+                    String pinLine = scanner.nextLine(); // Read the line with "PIN: ..."
+                    String nameLine = scanner.nextLine(); // Read the line with "Name: ..."
+                    String name = nameLine.split(": ")[1];
+                    model.addRow(new Object[]{id, name});
+                    accountDataList.add(line);
+                }
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            // Handle the exception
         }
 
         backButton.addActionListener((ActionEvent e) -> {
-                new Menu();
-                dispose(); // Close the window
+            new Menu();
+            dispose(); // Close the window
         });
 
         // Attach an action listener to the delete button
@@ -49,10 +54,10 @@ public class BankMembers extends javax.swing.JFrame {
             if (selectedRow >= 0) {
                 // Remove the selected row from the table model
                 model.removeRow(selectedRow);
-                
+
                 // Remove the account data from the accountDataList
                 accountDataList.remove(selectedRow);
-                
+
                 // Remove the account data from the file
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
                     for (String line : accountDataList) {
@@ -98,14 +103,14 @@ public class BankMembers extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Balance"
+                "ID", "Name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -127,7 +132,6 @@ public class BankMembers extends javax.swing.JFrame {
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setResizable(false);
             table.getColumnModel().getColumn(1).setResizable(false);
-            table.getColumnModel().getColumn(2).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

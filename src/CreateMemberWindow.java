@@ -7,24 +7,23 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CreateAccountWindow extends javax.swing.JFrame {
+public class CreateMemberWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateAccountWindow
      */
-    public CreateAccountWindow() {
+    public CreateMemberWindow() {
         initComponents();
         restrictToNumericInput(idTextField);
         restrictToNumericInput(pinTextField);
         restrictToLetterInput(nameTextField);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        
+
         // Attach a key listener for the enter button
         pinTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -34,28 +33,25 @@ public class CreateAccountWindow extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         // Attach an action listener to the submit button
         signUpButton.addActionListener((ActionEvent e) -> {
             String id = idTextField.getText();
             String pin = new String(pinTextField.getPassword());
-            String name1 = nameTextField.getText();
-            // Perform your desired action with the ID, PIN, and Name values here
-            // For example, you can store them in a file
-            String filename = "account_data.txt";
-            boolean idExists = checkIfIdExists(filename, id);
-            if (idExists) {
-                JOptionPane.showMessageDialog(new JFrame(), "ID already exists. Please choose a different ID.");
+            String name = nameTextField.getText();
+
+            if (checkIfIdExists("account_data.txt", id)) {
+                JOptionPane.showMessageDialog(new JFrame(), "ID already exists!");
             } else {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-                    // Append the account data to the file
-                    writer.write("ID: " + id + ", PIN: " + pin + ", Name: " + name1 + ", Balance: 0.00");
-                    writer.newLine();
-                    writer.flush();
+                try (FileWriter writer = new FileWriter("account_data.txt", true)) {
+                    writer.write("ID: " + id + "\n");
+                    writer.write("PIN: " + pin + "\n");
+                    writer.write("Name: " + name + "\n");
+                    writer.write("Accounts:\n");
                     JOptionPane.showMessageDialog(new JFrame(), "Account created successfully!");
                     dispose();
                     new Menu();
-                }catch (IOException ex) {
+                } catch (IOException ex) {
                     JOptionPane.showMessageDialog(new JFrame(), "Error occurred while writing to the file.");
                 }
             }
@@ -66,8 +62,8 @@ public class CreateAccountWindow extends javax.swing.JFrame {
             dispose();
         });
     }
-
     // Helper method to check if the given ID exists in the file
+
     private static boolean checkIfIdExists(String filename, String id) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;

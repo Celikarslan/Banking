@@ -1,3 +1,4 @@
+
 /**
  *
  * @author bcelikar
@@ -17,7 +18,7 @@ public class Menu extends JFrame {
         restrictToNumericInput(pinTextField);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        
+
         // Attach a key listener for the enter button
         pinTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -27,13 +28,12 @@ public class Menu extends JFrame {
                 }
             }
         });
-        
+
         // Attach an action listener to the list members button
         listMembersButton.addActionListener((ActionEvent e) -> {
-           new BankMembers();
-           dispose();
+            new BankMembers();
+            dispose();
         });
-
 
         // Attach an action listener to the log in button
         loginButton.addActionListener((ActionEvent e) -> {
@@ -49,13 +49,14 @@ public class Menu extends JFrame {
             } else if (!checkPin(filename, id, pin)) {
                 JOptionPane.showMessageDialog(new JFrame(), "Pin is not correct. Please enter another pin");
             } else {
-                new Window(filename, id);
+                new Window(filename, pin, id);
+                
                 dispose();
             }
         });
         // Attach an action listener to the create account button
         signUpButton.addActionListener((ActionEvent e) -> {
-            new CreateAccountWindow();
+            new CreateMemberWindow();
             dispose();
         });
     }
@@ -73,19 +74,24 @@ public class Menu extends JFrame {
         return false; // ID does not exist in the file
     }
 
-    // Helper method to check if the given pin is correct for the given id
     private static boolean checkPin(String filename, String id, String pin) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("ID: " + id + ", PIN: " + pin + ",")) {
-                    return true; // ID already exists in the file
+                if (line.startsWith("ID:") && line.endsWith(id)) {
+                    String pinLine = reader.readLine(); // Read the line with "PIN: ..."
+                    if (pinLine.startsWith("PIN:")) {
+                        String pinNum = pinLine.split(": ")[1];
+                        if (pinNum.equals(pin)) {
+                            return true;
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
             // Handle the exception
         }
-        return false; // ID does not exist in the file
+        return false; // ID does not exist in the file or incorrect PIN
     }
 
     // Helper method to restrict the text field to numeric input only

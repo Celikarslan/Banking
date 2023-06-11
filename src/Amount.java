@@ -7,19 +7,24 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.util.ArrayList;
 
 public class Amount extends javax.swing.JDialog {
 
     private double enteredAmount;
     private boolean isConfirmed;
+    private ArrayList<Account> accounts;
+    String selectedOption;
 
     /**
      * Creates new form NewJDialog
      *
      * @param parent
+     * @param accountList
      */
-    public Amount(JFrame parent) {
+    public Amount(JFrame parent,ArrayList<Account> accountList) {
         super(parent, true);
+        this.accounts = accountList;
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -32,11 +37,17 @@ public class Amount extends javax.swing.JDialog {
                 }
             }
         });
+        
+        // Populate the JComboBox with account numbers
+        for (Account account : accounts) {
+            jComboBox1.addItem(account.getDescription());
+        }
 
         submitButton.addActionListener((ActionEvent e) -> {
             // Parse the entered amount and set the flag
             try {
                 enteredAmount = Double.parseDouble(amountField.getText());
+                selectedOption = (String) jComboBox1.getSelectedItem();
                 isConfirmed = true;
             } catch (NumberFormatException ex) {
                 // Invalid input, display an error message
@@ -58,6 +69,14 @@ public class Amount extends javax.swing.JDialog {
     public double showDialog() {
         setVisible(true);
         return enteredAmount;
+    }
+    public Account getAccount(){
+        for(Account account: accounts){
+            if(account.getDescription().equals(selectedOption)){
+                return account;
+            }
+        }
+        return null;
     }
 
     // Boolean for if the amount is confirmed
@@ -81,10 +100,14 @@ public class Amount extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(300, 250));
+        setPreferredSize(new java.awt.Dimension(348, 250));
 
         jPanel1.setBackground(new java.awt.Color(199, 160, 65));
+        jPanel1.setPreferredSize(new java.awt.Dimension(350, 130));
 
         amountField.setForeground(new java.awt.Color(105, 105, 105));
 
@@ -112,7 +135,7 @@ public class Amount extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(amountField))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,33 +148,40 @@ public class Amount extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBackground(new java.awt.Color(105, 105, 105));
-        jPanel2.setPreferredSize(new java.awt.Dimension(348, 40));
+        jPanel2.setPreferredSize(new java.awt.Dimension(348, 80));
 
         jLabel1.setBackground(new java.awt.Color(255, 239, 127));
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Enter Amount");
+        jLabel1.setText("Select Account");
+        jLabel1.setPreferredSize(new java.awt.Dimension(105, 18));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(141, 141, 141)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(143, 143, 143))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -163,6 +193,7 @@ public class Amount extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField amountField;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
